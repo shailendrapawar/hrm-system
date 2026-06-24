@@ -17,6 +17,7 @@ public class UpdateIUserInputDTO implements IUserPayload {
     @Email(message = "invalid email")
     private String email;
 
+//    @Size(min=5,max=50,message="Password must be between 3 and 50")
     private  String password;
 
     private Boolean isLocked;
