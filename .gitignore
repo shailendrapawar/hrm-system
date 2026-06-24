@@ -1,0 +1,82 @@
+HELP.md
+
+# ===========================
+# SPRING BOOT / MAVEN
+# ===========================
+target/
+.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/nbdist/
+/.nb-gradle/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+### VS Code ###
+.vscode/
+
+### Spring Environment ###
+application-local.properties
+application-local.yml
+application-dev.properties
+application-dev.yml
+application-prod.properties
+application-prod.yml
+
+### Spring Logs ###
+*.log
+logs/
+
+# ===========================
+# REACT / VITE
+# ===========================
+
+### Dependencies ###
+node_modules/
+
+### Build Output ###
+dist/
+dist-ssr/
+
+### Cache ###
+.vite/
+.eslintcache
+
+### React Environment ###
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+### React Logs ###
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# ===========================
+# OS
+# ===========================
+.DS_Store
+Thumbs.db
