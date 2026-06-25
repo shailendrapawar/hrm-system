@@ -14,6 +14,8 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -37,7 +39,7 @@ public class UserEntity {
     @NotBlank(message = "password is required")
     private String password;
 
-    private String[] roles;
+    private List<String> roles=new ArrayList<>();
 
     private Boolean isLocked=false;
     private Boolean isDeleted=false;

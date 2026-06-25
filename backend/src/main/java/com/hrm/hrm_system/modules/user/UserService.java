@@ -1,12 +1,10 @@
 package com.hrm.hrm_system.modules.user;
 
 import com.hrm.hrm_system.common.exception.AppException;
+import com.hrm.hrm_system.common.utils.JWTHelper;
 import com.hrm.hrm_system.common.utils.UUIDHelper;
-import com.hrm.hrm_system.modules.user.dtos.CreateIUserInputDTO;
+import com.hrm.hrm_system.modules.user.dtos.*;
 import com.hrm.hrm_system.common.utils.StringHelper;
-import com.hrm.hrm_system.modules.user.dtos.SearchUserFilters;
-import com.hrm.hrm_system.modules.user.dtos.UpdateIUserInputDTO;
-import com.hrm.hrm_system.modules.user.dtos.IUserPayload;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
@@ -14,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import javax.swing.text.html.Option;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,6 +27,8 @@ public class UserService {
     private  UUIDHelper uuidHelper;
     @Autowired
     private StringHelper stringHelper;
+    @Autowired
+    private JWTHelper jwtHelper;
 
     public UserService(UserRepository repository){
         this.userRepository=repository;
@@ -50,7 +52,7 @@ public class UserService {
         }
 
         // only update schema fields
-        if(model instanceof  UpdateIUserInputDTO updateModel){
+        if(model instanceof  UpdateUserInputDTO updateModel){
             if(updateModel.getIsLocked()!=null){
                 entity.setIsLocked(updateModel.getIsLocked());
             }
@@ -120,7 +122,7 @@ public class UserService {
     }
 
     // CREATE
-    public UserEntity create(CreateIUserInputDTO model){
+    public UserEntity create(CreateUserInputDTO model){
 
         // check if user already exits  with incoming email
         Optional<UserEntity> entity= this.get(model.getEmail());
@@ -134,12 +136,14 @@ public class UserService {
         newUser.setId(uuidHelper.generate());
 
         newUser=this.set(newUser,model);
+//        ArrayList<String> roles= new ArrayList<>();
+//        newUser.setRoles(roles);
 
         return userRepository.save(newUser);
     }
 
     // UPDATE
-    public UserEntity update(String id,UpdateIUserInputDTO model){
+    public UserEntity update(String id, UpdateUserInputDTO model){
 
         Optional<UserEntity> entity = this.get(id);
 
@@ -151,5 +155,6 @@ public class UserService {
         user=this.userRepository.save(user);
         return user;
     }
+
 
 }

@@ -3,9 +3,12 @@ package com.hrm.hrm_system.modules.user;
 import com.hrm.hrm_system.common.exception.AppException;
 import com.hrm.hrm_system.common.response.ApiResponse;
 import com.hrm.hrm_system.common.response.ResponseHandler;
-import com.hrm.hrm_system.modules.user.dtos.CreateIUserInputDTO;
+import com.hrm.hrm_system.modules.user.dtos.CreateUserInputDTO;
+import com.hrm.hrm_system.modules.user.dtos.LoginUserInputDTO;
 import com.hrm.hrm_system.modules.user.dtos.SearchUserFilters;
-import com.hrm.hrm_system.modules.user.dtos.UpdateIUserInputDTO;
+import com.hrm.hrm_system.modules.user.dtos.UpdateUserInputDTO;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,7 +23,7 @@ import java.util.Optional;
 public class UserController {
     @Autowired UserService userService;
 
-    @GetMapping("/{keyword}")
+    @GetMapping("/{keyword}") //GET SINGLE USER
     public ResponseEntity<ApiResponse<UserEntity>> get(@PathVariable String keyword){
         Optional<UserEntity> user= this.userService.get(keyword);
         if(user.isEmpty()){
@@ -29,21 +32,15 @@ public class UserController {
         return ResponseHandler.send(HttpStatus.FOUND,"User found",user.get());
     }
 
-    @GetMapping("/")
+    @GetMapping("")// SEARCH or GET USERS LIST
     public ResponseEntity<ApiResponse<List<UserEntity>>> search(@ModelAttribute SearchUserFilters filters){
 
         List<UserEntity> users=userService.search(filters);
         return ResponseHandler.send(HttpStatus.OK,"Users found ",users);
     }
 
-    @PostMapping("/")
-    public ResponseEntity<ApiResponse<UserEntity>> create(@Valid @RequestBody CreateIUserInputDTO data){
-        UserEntity user= userService.create(data);
-        return ResponseHandler.send(HttpStatus.CREATED,"Users Created",user);
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<UserEntity>> update(@PathVariable String id, @RequestBody UpdateIUserInputDTO data){
+    @PutMapping("/{id}") // UPDATE-USER
+    public ResponseEntity<ApiResponse<UserEntity>> update(@PathVariable String id, @RequestBody UpdateUserInputDTO data){
         UserEntity user=userService.update(id,data);
         return ResponseHandler.send(
                 HttpStatus.OK,
@@ -51,4 +48,8 @@ public class UserController {
                 user
         );
     }
+
+
+
+
 }

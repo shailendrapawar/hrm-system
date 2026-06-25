@@ -7,7 +7,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class UpdateIUserInputDTO implements IUserPayload {
+public class UpdateUserInputDTO implements IUserPayload {
     @Size(min=3,max=50,message="First name must be between 3 and 50")
     private String firstName;
 
