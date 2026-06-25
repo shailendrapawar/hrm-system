@@ -3,10 +3,7 @@ package com.hrm.hrm_system.modules.user;
 import com.hrm.hrm_system.common.exception.AppException;
 import com.hrm.hrm_system.common.response.ApiResponse;
 import com.hrm.hrm_system.common.response.ResponseHandler;
-import com.hrm.hrm_system.modules.user.dtos.CreateUserInputDTO;
-import com.hrm.hrm_system.modules.user.dtos.LoginUserInputDTO;
-import com.hrm.hrm_system.modules.user.dtos.SearchUserFilters;
-import com.hrm.hrm_system.modules.user.dtos.UpdateUserInputDTO;
+import com.hrm.hrm_system.modules.user.dtos.*;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -22,30 +19,39 @@ import java.util.Optional;
 @RequestMapping("/api/users")
 public class UserController {
     @Autowired UserService userService;
+    @Autowired UserMapper userMapper;
 
     @GetMapping("/{keyword}") //GET SINGLE USER
-    public ResponseEntity<ApiResponse<UserEntity>> get(@PathVariable String keyword){
+    public ResponseEntity<ApiResponse<UserResponseDTO>> get(@PathVariable String keyword){
         Optional<UserEntity> user= this.userService.get(keyword);
         if(user.isEmpty()){
             throw new AppException("User not found", HttpStatus.NOT_FOUND);
         }
-        return ResponseHandler.send(HttpStatus.FOUND,"User found",user.get());
+        UserResponseDTO data=userMapper.toDTO(user.get(),null);
+        return ResponseHandler.send(HttpStatus.FOUND,"User found",data);
     }
 
     @GetMapping("")// SEARCH or GET USERS LIST
-    public ResponseEntity<ApiResponse<List<UserEntity>>> search(@ModelAttribute SearchUserFilters filters){
+    public ResponseEntity<ApiResponse<List<UserResponseDTO>>> search(@ModelAttribute SearchUserFilters filters){
 
         List<UserEntity> users=userService.search(filters);
-        return ResponseHandler.send(HttpStatus.OK,"Users found ",users);
+
+        List<UserResponseDTO>data=userMapper.toDTO(users,null);
+
+        return ResponseHandler.send(HttpStatus.OK,"Users found ",data);
     }
 
     @PutMapping("/{id}") // UPDATE-USER
-    public ResponseEntity<ApiResponse<UserEntity>> update(@PathVariable String id, @RequestBody UpdateUserInputDTO data){
-        UserEntity user=userService.update(id,data);
+    public ResponseEntity<ApiResponse<UserResponseDTO>> update(@PathVariable String id, @RequestBody UpdateUserInputDTO payload){
+
+        UserEntity user=userService.update(id,payload);
+
+        UserResponseDTO data = userMapper.toDTO(user,null);
+
         return ResponseHandler.send(
                 HttpStatus.OK,
                 "User updated successfully",
-                user
+                data
         );
     }
 

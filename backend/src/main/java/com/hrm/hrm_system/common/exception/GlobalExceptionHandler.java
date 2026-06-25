@@ -13,9 +13,9 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiResponse<Object>> handleAppException(
             AppException ex
     ){
-        System.out.println("========== ERROR ==========");
-        ex.printStackTrace();
-        System.out.println("===========================");
+//        System.out.println("========== ERROR ==========");
+//        ex.printStackTrace();
+//        System.out.println("===========================");
         return ResponseHandler.send(
                 ex.getStatus(),
                 ex.getMessage(),

@@ -2,6 +2,7 @@ package com.hrm.hrm_system.modules.auth;
 
 import com.hrm.hrm_system.common.response.ApiResponse;
 import com.hrm.hrm_system.common.response.ResponseHandler;
+import com.hrm.hrm_system.common.utils.CookieHelper;
 import com.hrm.hrm_system.modules.user.UserEntity;
 import com.hrm.hrm_system.modules.user.UserService;
 import com.hrm.hrm_system.modules.user.dtos.CreateUserInputDTO;
@@ -22,6 +23,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
     @Autowired
     AuthService authService;
+    @Autowired
+    CookieHelper cookieHelper;
 
     @PostMapping("/register")
     public ResponseEntity<ApiResponse<UserEntity>> register(@Valid @RequestBody CreateUserInputDTO data){
@@ -31,13 +34,11 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<ApiResponse<String>> login(@Valid @RequestBody LoginUserInputDTO payload, HttpServletResponse response){
+
         String token= authService.login(payload);
 
         //set cookies
-        Cookie cookie=new Cookie("token",token);
-        cookie.setHttpOnly(true);
-        cookie.setPath("/");
-        cookie.setMaxAge(60*60*24);
+        Cookie cookie=cookieHelper.generateLoginCookies(token);
         response.addCookie(cookie);
 
         return ResponseHandler.send(HttpStatus.OK,"User logged in",token);
