@@ -5,7 +5,7 @@ import com.hrm.hrm_system.common.utils.JWTHelper;
 import com.hrm.hrm_system.modules.user.UserEntity;
 import com.hrm.hrm_system.modules.user.UserService;
 import com.hrm.hrm_system.modules.user.dtos.CreateUserInputDTO;
-import com.hrm.hrm_system.modules.user.dtos.LoginUserInputDTO;
+import com.hrm.hrm_system.modules.auth.dtos.LoginUserInputDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -20,7 +20,9 @@ public class AuthService {
     JWTHelper jwtHelper;
 
     public String login (LoginUserInputDTO payload){
+
         Optional<UserEntity> entity=userService.get(payload.getEmail());
+
         if(entity.isEmpty()){
             throw  new AppException("Account not found with these credentials", HttpStatus.NOT_FOUND);
         }

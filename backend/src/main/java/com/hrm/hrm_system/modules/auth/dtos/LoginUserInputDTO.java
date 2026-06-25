@@ -1,4 +1,4 @@
-package com.hrm.hrm_system.modules.user.dtos;
+package com.hrm.hrm_system.modules.auth.dtos;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
