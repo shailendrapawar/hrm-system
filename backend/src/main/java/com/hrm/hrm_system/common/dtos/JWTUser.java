@@ -8,6 +8,7 @@ import lombok.Setter;
 import java.util.List;
 
 @Getter
+
 @AllArgsConstructor
 public class JWTUser {
     private String id;

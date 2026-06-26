@@ -1,5 +1,6 @@
 package com.hrm.hrm_system.modules.auth;
 
+import com.hrm.hrm_system.common.dtos.AppContext;
 import com.hrm.hrm_system.common.exception.AppException;
 import com.hrm.hrm_system.common.utils.JWTHelper;
 import com.hrm.hrm_system.modules.user.UserEntity;
@@ -19,9 +20,9 @@ public class AuthService {
     @Autowired
     JWTHelper jwtHelper;
 
-    public String login (LoginUserInputDTO payload){
+    public String login (LoginUserInputDTO payload, AppContext context){
 
-        Optional<UserEntity> entity=userService.get(payload.getEmail());
+        Optional<UserEntity> entity=userService.get(payload.getEmail(),context);
 
         if(entity.isEmpty()){
             throw  new AppException("Account not found with these credentials", HttpStatus.NOT_FOUND);
@@ -39,8 +40,8 @@ public class AuthService {
         return token;
     }
 
-    public Boolean register(CreateUserInputDTO payload){
-        UserEntity user= userService.create(payload);
+    public Boolean register(CreateUserInputDTO payload,AppContext context){
+        UserEntity user= userService.create(payload,context);
         if(user==null){
             throw new AppException("Issue while registering the user",HttpStatus.INTERNAL_SERVER_ERROR);
         }

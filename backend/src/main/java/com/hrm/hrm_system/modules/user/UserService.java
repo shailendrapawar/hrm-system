@@ -1,5 +1,6 @@
 package com.hrm.hrm_system.modules.user;
 
+import com.hrm.hrm_system.common.dtos.AppContext;
 import com.hrm.hrm_system.common.exception.AppException;
 import com.hrm.hrm_system.common.utils.JWTHelper;
 import com.hrm.hrm_system.common.utils.UUIDHelper;
@@ -36,7 +37,7 @@ public class UserService {
 
     // EXPORT METHODS ================================================= >
     // SET
-    public UserEntity set(UserEntity entity, IUserPayload model){
+    public UserEntity set(UserEntity entity, IUserPayload model, AppContext context){
         if(StringUtils.hasText(model.getFirstName())){
             entity.setFirstName(model.getFirstName());
         }
@@ -64,7 +65,7 @@ public class UserService {
     }
 
     //GET
-    public Optional<UserEntity> get(String keyword){
+    public Optional<UserEntity> get(String keyword,AppContext context){
 
         if(!StringUtils.hasText(keyword)) {
             throw new AppException("Invalid identifier", HttpStatus.BAD_REQUEST);
@@ -83,7 +84,7 @@ public class UserService {
     }
 
     // SEARCH
-    public List<UserEntity> search(SearchUserFilters filters){
+    public List<UserEntity> search(SearchUserFilters filters,AppContext context){
         System.out.println(filters.getIsLocked());
         System.out.println(filters.getNameKeyword());
         //init where clause
@@ -122,10 +123,10 @@ public class UserService {
     }
 
     // CREATE
-    public UserEntity create(CreateUserInputDTO model){
+    public UserEntity create(CreateUserInputDTO model,AppContext context){
 
         // check if user already exits  with incoming email
-        Optional<UserEntity> entity= this.get(model.getEmail());
+        Optional<UserEntity> entity= this.get(model.getEmail(),context);
         if(entity.isPresent()){
             throw  new AppException("User already exists with this email",HttpStatus.BAD_REQUEST);
         }
@@ -135,7 +136,7 @@ public class UserService {
         newUser.setEmail(model.getEmail());
         newUser.setId(uuidHelper.generate());
 
-        newUser=this.set(newUser,model);
+        newUser=this.set(newUser,model, context);
 //        ArrayList<String> roles= new ArrayList<>();
 //        newUser.setRoles(roles);
 
@@ -143,15 +144,15 @@ public class UserService {
     }
 
     // UPDATE
-    public UserEntity update(String id, UpdateUserInputDTO model){
+    public UserEntity update(String id, UpdateUserInputDTO model,AppContext context){
 
-        Optional<UserEntity> entity = this.get(id);
+        Optional<UserEntity> entity = this.get(id,context);
 
         if(entity.isEmpty()){
             throw new AppException("User not found",HttpStatus.NOT_FOUND);
         }
 
-        UserEntity user=this.set(entity.get(),model);
+        UserEntity user=this.set(entity.get(),model,context);
         user=this.userRepository.save(user);
         return user;
     }
