@@ -17,6 +17,16 @@ public class UserMapper {
         dto.setId(user.getId());
         dto.setFirstName(user.getFirstName());
         dto.setLastName(user.getLastName());
+
+        // ADMIN view fields
+        if(currentUser!=null && currentUser.getRoles().contains("admin") ){
+            dto.setRoles(user.getRoles());
+            dto.setStatus(user.getStatus());
+            dto.setEmail(user.getEmail());
+            dto.setCreatedAt(user.getCreatedAt());
+            dto.setUpdatedAt(user.getUpdatedAt());
+        }
+
         return dto;
     }
 

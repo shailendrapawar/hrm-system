@@ -1,5 +1,8 @@
 package com.hrm.hrm_system.modules.user.dtos;
 
+import com.hrm.hrm_system.modules.user.enums.UserStatus;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
@@ -20,6 +23,7 @@ public class UpdateUserInputDTO implements IUserPayload {
 //    @Size(min=5,max=50,message="Password must be between 3 and 50")
     private  String password;
 
-    private Boolean isLocked;
-    private Boolean isDeleted;
+    @Enumerated(EnumType.STRING)
+    private UserStatus status;
+
 }

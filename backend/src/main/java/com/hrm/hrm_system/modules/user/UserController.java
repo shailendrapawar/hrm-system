@@ -39,7 +39,7 @@ public class UserController {
 
         //3: map response
         UserResponseDTO data=userMapper.toDTO(user.get(),null);
-        return ResponseHandler.send(HttpStatus.FOUND,"User found",data);
+        return ResponseHandler.send(HttpStatus.OK,"User found",data);
     }
 
     @GetMapping("/")// SEARCH or GET USERS LIST
@@ -52,13 +52,13 @@ public class UserController {
         List<UserEntity> users=userService.search(filters,context);
 
         //3: map response
-        List<UserResponseDTO>data=userMapper.toDTO(users,null);
+        List<UserResponseDTO>data=userMapper.toDTO(users,context.getUser());
 
         return ResponseHandler.send(HttpStatus.OK,"Users found ",data);
     }
 
     @PutMapping("/{id}") // UPDATE-USER
-    public ResponseEntity<ApiResponse<UserResponseDTO>> update(HttpServletRequest req, @PathVariable String id, @RequestBody UpdateUserInputDTO payload){
+    public ResponseEntity<ApiResponse<UserResponseDTO>> update(HttpServletRequest req, @PathVariable String id,@Valid @RequestBody UpdateUserInputDTO payload){
 
         //1: get app-context
         AppContext context=(AppContext) req.getAttribute("context");

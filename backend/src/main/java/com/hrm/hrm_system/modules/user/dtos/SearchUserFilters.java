@@ -1,5 +1,6 @@
 package com.hrm.hrm_system.modules.user.dtos;
 
+import com.hrm.hrm_system.modules.user.enums.UserStatus;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -7,6 +8,5 @@ import lombok.Setter;
 @Setter
 public class SearchUserFilters {
     private String nameKeyword;
-    private Boolean isLocked;
-    private Boolean isDeleted;
+    private UserStatus status;
 }

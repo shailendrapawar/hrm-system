@@ -6,6 +6,7 @@ import com.hrm.hrm_system.common.utils.JWTHelper;
 import com.hrm.hrm_system.common.utils.UUIDHelper;
 import com.hrm.hrm_system.modules.user.dtos.*;
 import com.hrm.hrm_system.common.utils.StringHelper;
+import com.hrm.hrm_system.modules.user.enums.UserDefaultRole;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
@@ -54,11 +55,8 @@ public class UserService {
 
         // only update schema fields
         if(model instanceof  UpdateUserInputDTO updateModel){
-            if(updateModel.getIsLocked()!=null){
-                entity.setIsLocked(updateModel.getIsLocked());
-            }
-            if(updateModel.getIsDeleted()!=null){
-                entity.setIsDeleted(updateModel.getIsDeleted());
+            if(updateModel.getStatus()!=null){
+                entity.setStatus(updateModel.getStatus());
             }
         }
         return entity;
@@ -85,8 +83,7 @@ public class UserService {
 
     // SEARCH
     public List<UserEntity> search(SearchUserFilters filters,AppContext context){
-        System.out.println(filters.getIsLocked());
-        System.out.println(filters.getNameKeyword());
+
         //init where clause
         Specification<UserEntity> spec= Specification.where((r,q,cb)->cb.conjunction());
 
@@ -100,21 +97,14 @@ public class UserService {
                     ));
         }
         // 2: for isLocked
-        if(filters.getIsLocked()!=null){
+        if(filters.getStatus()!=null){
             spec=spec.and((r,q,cb)->
                     cb.equal(
-                            r.get("isLocked"),
-                            filters.getIsLocked()
+                            r.get("status"),
+                            filters.getStatus()
                     ));
         }
-        // 3: for isDeleted
-        if(filters.getIsDeleted()!=null){
-            spec=spec.and((r,q,cb)->
-                    cb.equal(
-                            r.get("isDeleted"),
-                            filters.getIsDeleted()
-                    ));
-        }
+
 
 
         List<UserEntity> users= userRepository.findAll(spec);
@@ -133,12 +123,16 @@ public class UserService {
         //create new user
         UserEntity newUser=new UserEntity();
 
-        newUser.setEmail(model.getEmail());
+        // set initial values
         newUser.setId(uuidHelper.generate());
 
+        //set default application roles
+        ArrayList<String> roles= new ArrayList<>();
+        roles.add(UserDefaultRole.USER.toString().toLowerCase());
+
+        newUser.setRoles(roles);
+
         newUser=this.set(newUser,model, context);
-//        ArrayList<String> roles= new ArrayList<>();
-//        newUser.setRoles(roles);
 
         return userRepository.save(newUser);
     }

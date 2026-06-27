@@ -23,4 +23,6 @@ public class CreateUserInputDTO implements IUserPayload {
 
     @NotBlank(message = "password is required")
     private String password;
+
+
 }

@@ -3,9 +3,11 @@ package com.hrm.hrm_system.modules.user.dtos;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.hrm.hrm_system.common.dtos.JWTUser;
 import com.hrm.hrm_system.modules.user.UserEntity;
+import com.hrm.hrm_system.modules.user.enums.UserStatus;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -21,6 +23,11 @@ public class UserResponseDTO {
 
     private String email;
 
+    private UserStatus status;
+
     private List<String> roles;
+
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
 }
