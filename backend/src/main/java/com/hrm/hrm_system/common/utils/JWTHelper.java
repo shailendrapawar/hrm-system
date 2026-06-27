@@ -44,6 +44,14 @@ public class JWTHelper {
                 .signWith(geySecretKey())//it only accept bytes
                 .compact();
     }
+    public Boolean verifyToken(String token){
+        try {
+            Claims claims = getClaims(token);
+            return claims.getExpiration().after(new Date());
+        } catch (Exception e) {
+            return false;
+        }
+    }
 
     // EXTRACT USER
     public JWTUser extractUser(String token){

@@ -1,6 +1,7 @@
 package com.hrm.hrm_system.modules.user;
 
 import com.hrm.hrm_system.common.dtos.AppContext;
+import com.hrm.hrm_system.common.dtos.JWTUser;
 import com.hrm.hrm_system.common.exception.AppException;
 import com.hrm.hrm_system.common.response.ApiResponse;
 import com.hrm.hrm_system.common.response.ResponseHandler;
@@ -9,6 +10,7 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
@@ -44,7 +47,7 @@ public class UserController {
 
         //1: get app-context
         AppContext context=(AppContext) req.getAttribute("context");
-
+//
         //2: call service
         List<UserEntity> users=userService.search(filters,context);
 
