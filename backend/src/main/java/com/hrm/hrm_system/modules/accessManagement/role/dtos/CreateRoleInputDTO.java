@@ -1,5 +1,8 @@
 package com.hrm.hrm_system.modules.accessManagement.role.dtos;
 
+import com.hrm.hrm_system.modules.accessManagement.role.enums.RoleType;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
