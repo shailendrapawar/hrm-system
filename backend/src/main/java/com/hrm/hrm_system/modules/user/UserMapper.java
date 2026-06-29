@@ -20,7 +20,6 @@ public class UserMapper {
 
         // ADMIN view fields
         if(currentUser!=null && currentUser.getRoles().contains("admin") ){
-            dto.setRoles(user.getRoles());
             dto.setStatus(user.getStatus());
             dto.setEmail(user.getEmail());
             dto.setCreatedAt(user.getCreatedAt());

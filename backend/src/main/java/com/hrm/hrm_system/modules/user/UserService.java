@@ -14,7 +14,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import javax.swing.text.html.Option;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -105,8 +104,6 @@ public class UserService {
                     ));
         }
 
-
-
         List<UserEntity> users= userRepository.findAll(spec);
 
         return users;
@@ -126,11 +123,6 @@ public class UserService {
         // set initial values
         newUser.setId(uuidHelper.generate());
 
-        //set default application roles
-        ArrayList<String> roles= new ArrayList<>();
-        roles.add(UserDefaultRole.USER.toString().toLowerCase());
-
-        newUser.setRoles(roles);
 
         newUser=this.set(newUser,model, context);
 

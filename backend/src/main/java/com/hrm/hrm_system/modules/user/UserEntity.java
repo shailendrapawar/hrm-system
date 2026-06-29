@@ -1,6 +1,6 @@
 package com.hrm.hrm_system.modules.user;
 
-import com.hrm.hrm_system.modules.user.enums.UserDefaultRole;
+import com.hrm.hrm_system.modules.accessManagement.userRole.UserRoleEntity;
 import com.hrm.hrm_system.modules.user.enums.UserStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -49,13 +49,17 @@ public class UserEntity {
     private UserStatus status= UserStatus.INACTIVE;
 
     // 6
-    private List<String> roles=new ArrayList<>();
-
-    // 7
     @CreationTimestamp
     private LocalDateTime createdAt;
 
-    // 8
+    // 7
     @UpdateTimestamp
     private LocalDateTime updatedAt;
+
+//    @OneToMany(
+//            mappedBy = "user",
+//            cascade = CascadeType.ALL,
+//            orphanRemoval = true
+//    )
+//    private List<UserRoleEntity> roles = new ArrayList<>();
 }

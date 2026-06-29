@@ -9,6 +9,7 @@ import io.jsonwebtoken.security.PrivateJwk;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -33,15 +34,16 @@ public class JWTHelper {
 
     // GENERATE TOKEN
     public String generateToken(UserEntity user){
+        List<String> roles=new ArrayList<>();
         return Jwts.builder()
                 .subject(user.getId())
                 .claim("email",user.getEmail())
-                .claim("roles",user.getRoles())
+                .claim("roles",roles)
                 .issuedAt(new Date())
                 .expiration(
                         new Date(System.currentTimeMillis()+EXPIRATION)
                 )
-                .signWith(geySecretKey())//it only accept bytes
+                .signWith(geySecretKey())// only accept bytes
                 .compact();
     }
     public Boolean verifyToken(String token){
